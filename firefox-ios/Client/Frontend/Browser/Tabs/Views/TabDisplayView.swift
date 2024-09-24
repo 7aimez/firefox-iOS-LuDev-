@@ -104,7 +104,10 @@ class TabDisplayView: UIView,
     func newState(state: TabsPanelState) {
         tabsState = state
 
-        collectionView.reloadData()
+        if state.didRefreshTabs  {
+            collectionView.reloadData()
+        }
+
 
         if let index = state.scrollToIndex {
             scrollToTab(index)

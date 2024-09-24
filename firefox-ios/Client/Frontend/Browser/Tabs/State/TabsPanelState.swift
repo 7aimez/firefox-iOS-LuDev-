@@ -14,6 +14,7 @@ struct TabsPanelState: ScreenState, Equatable {
     var toastType: ToastType?
     var windowUUID: WindowUUID
     var scrollToIndex: Int?
+    var didRefreshTabs: Bool
     var didTapAddTab: Bool
     var urlRequest: URLRequest?
 
@@ -38,6 +39,7 @@ struct TabsPanelState: ScreenState, Equatable {
                   toastType: panelState.toastType,
                   scrollToIndex: panelState.scrollToIndex,
                   didTapAddTab: panelState.didTapAddTab,
+                  didRefreshTabs: panelState.didRefreshTabs,
                   urlRequest: panelState.urlRequest)
     }
 
@@ -50,6 +52,7 @@ struct TabsPanelState: ScreenState, Equatable {
             isInactiveTabsExpanded: false,
             toastType: nil,
             didTapAddTab: false,
+            didRefreshTabs: false,
             urlRequest: nil)
     }
 
@@ -61,6 +64,7 @@ struct TabsPanelState: ScreenState, Equatable {
          toastType: ToastType? = nil,
          scrollToIndex: Int? = nil,
          didTapAddTab: Bool = false,
+         didRefreshTabs: Bool = false,
          urlRequest: URLRequest? = nil) {
         self.isPrivateMode = isPrivateMode
         self.tabs = tabs
@@ -70,6 +74,7 @@ struct TabsPanelState: ScreenState, Equatable {
         self.windowUUID = windowUUID
         self.scrollToIndex = scrollToIndex
         self.didTapAddTab = didTapAddTab
+        self.didRefreshTabs = didRefreshTabs
         self.urlRequest = urlRequest
     }
 
@@ -98,7 +103,8 @@ struct TabsPanelState: ScreenState, Equatable {
                                   tabs: tabsModel.tabs,
                                   inactiveTabs: tabsModel.inactiveTabs,
                                   isInactiveTabsExpanded: tabsModel.isInactiveTabsExpanded,
-                                  scrollToIndex: selectedTabIndex)
+                                  scrollToIndex: selectedTabIndex,
+                                  didRefreshTabs: true)
 
         case TabPanelMiddlewareActionType.refreshTabs:
             guard let tabModel = action.tabDisplayModel else { return state }
@@ -111,7 +117,8 @@ struct TabsPanelState: ScreenState, Equatable {
                                   tabs: tabModel.tabs,
                                   inactiveTabs: state.inactiveTabs,
                                   isInactiveTabsExpanded: state.isInactiveTabsExpanded,
-                                  scrollToIndex: selectedTabIndex)
+                                  scrollToIndex: selectedTabIndex,
+                                  didRefreshTabs: true)
 
         case TabPanelMiddlewareActionType.refreshInactiveTabs:
             guard let inactiveTabs = action.inactiveTabModels else { return state }
